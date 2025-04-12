@@ -117,45 +117,11 @@ echo "0 0 * * * certbot renew --quiet" | crontab -
 # MariaDB Secure Installation & Setup
 # ==============================
 
-whiptail --msgbox "Configuring MariaDB security settings..." 10 60
-mysql_secure_installation <<EOF
-
-Y
-n
-Y
-Y
-Y
-Y
-EOF
-
-# Create database and user
-DB_NAME=$(whiptail --inputbox "Enter the database name:" 10 60 3>&1 1>&2 2>&3)
-DB_USER=$(whiptail --inputbox "Enter the database username:" 10 60 3>&1 1>&2 2>&3)
-DB_PASS=$(whiptail --passwordbox "Enter the database password:" 10 60 3>&1 1>&2 2>&3)
-
-mysql -u root -p <<EOF
-CREATE DATABASE $DB_NAME;
-CREATE USER '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASS';
-GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';
-FLUSH PRIVILEGES;
-EOF
 
 # ==============================
 # Environment Variable Setup
 # ==============================
 whiptail --msgbox "Setting up environment variables for the backend..." 10 60
-
-cat <<EOF > /var/www/backend/.env
-PORT=3000
-DB_HOST=localhost
-DB_USER=$DB_USER
-DB_PASS=$DB_PASS
-DB_NAME=$DB_NAME
-EOF
-
-
-chown $(whoami):$(whoami) /var/www/backend/.env
-chmod 600 /var/www/backend/.env
 
 # Restart PM2 to apply changes
 pm2 restart "$APP_NAME"
