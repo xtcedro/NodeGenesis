@@ -48,15 +48,14 @@ CREATE TABLE IF NOT EXISTS admin_users (
 );
 
 -- ======================
--- Site Settings
+-- Site Settings (Updated)
 -- ======================
 CREATE TABLE IF NOT EXISTS site_settings (
   id INT AUTO_INCREMENT PRIMARY KEY,
   site_key VARCHAR(50) NOT NULL UNIQUE,
-  site_title VARCHAR(100) NOT NULL,
+  hero_headline VARCHAR(150) NOT NULL,
   contact_email VARCHAR(100) NOT NULL,
   business_phone VARCHAR(20) NOT NULL,
-  homepage_banner TEXT NOT NULL,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
